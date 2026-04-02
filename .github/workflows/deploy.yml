@@ -46,7 +46,7 @@ jobs:
             --image=${{ env.IMAGE }}:${{ github.sha }} \
             --region=${{ env.REGION }} \
             --vpc-connector=hub-connector \
-            --vpc-egress=all-traffic \
+            --vpc-egress=private-ranges-only \
             --no-allow-unauthenticated \
             --memory=512Mi \
             --timeout=120 \

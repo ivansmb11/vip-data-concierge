@@ -7,6 +7,7 @@ resolves department, and routes to the correct agent.
 import os
 import logging
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 from agent import run_agent
 from config import USER_DEPARTMENT_MAP
 
@@ -14,6 +15,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
+CORS(app, resources={r"/query": {"origins": "*"}}, allow_headers=["Content-Type", "X-User-Email"])
 
 
 def get_user_department(headers) -> tuple[str, str]:
