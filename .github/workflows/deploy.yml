@@ -47,7 +47,8 @@ jobs:
             --region=${{ env.REGION }} \
             --vpc-connector=hub-connector \
             --vpc-egress=private-ranges-only \
-            --no-allow-unauthenticated \
+            --allow-unauthenticated \
             --memory=512Mi \
             --timeout=120 \
+            --set-env-vars="HR_DB_PASSWORD=${{ secrets.HR_DB_PASSWORD }},FIN_DB_PASSWORD=${{ secrets.FIN_DB_PASSWORD }}" \
             --project=${{ env.PROJECT_ID }}

@@ -3,20 +3,22 @@ Database configuration mapping departments to PSC endpoints.
 All connections stay within vpc-hub via Private Service Connect.
 """
 
+import os
+
 DATABASE_CONFIG = {
     "hr": {
-        "host": "10.0.0.50",
-        "port": 5432,
-        "database": "hr_data",
-        "user": "postgres",
-        "password": "hr-secret-2024",
+        "host": os.environ.get("HR_DB_HOST", "10.0.0.50"),
+        "port": int(os.environ.get("HR_DB_PORT", "5432")),
+        "database": os.environ.get("HR_DB_NAME", "hr_data"),
+        "user": os.environ.get("HR_DB_USER", "postgres"),
+        "password": os.environ.get("HR_DB_PASSWORD", ""),
     },
     "finance": {
-        "host": "10.0.0.51",
-        "port": 5432,
-        "database": "fin_data",
-        "user": "postgres",
-        "password": "fin-secret-2024",
+        "host": os.environ.get("FIN_DB_HOST", "10.0.0.51"),
+        "port": int(os.environ.get("FIN_DB_PORT", "5432")),
+        "database": os.environ.get("FIN_DB_NAME", "fin_data"),
+        "user": os.environ.get("FIN_DB_USER", "postgres"),
+        "password": os.environ.get("FIN_DB_PASSWORD", ""),
     },
 }
 
@@ -25,9 +27,9 @@ DATABASE_CONFIG = {
 USER_DEPARTMENT_MAP = {
     "hr@example.com": "hr",
     "finance@example.com": "finance",
-    "admin@example.com": "hr",  # admin can access HR by default
+    "admin@example.com": "hr",
 }
 
-PROJECT_ID = "hstia-agent"
-LOCATION = "us-central1"
-MODEL_NAME = "gemini-2.5-flash"
+PROJECT_ID = os.environ.get("GCP_PROJECT_ID", "hstia-agent")
+LOCATION = os.environ.get("GCP_LOCATION", "us-central1")
+MODEL_NAME = os.environ.get("MODEL_NAME", "gemini-2.5-flash")
