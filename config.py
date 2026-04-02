@@ -30,4 +30,4 @@ USER_DEPARTMENT_MAP = {
 
 PROJECT_ID = "hstia-agent"
 LOCATION = "us-central1"
-MODEL_NAME = "gemini-1.5-flash-002"
+MODEL_NAME = "gemini-2.0-flash"
