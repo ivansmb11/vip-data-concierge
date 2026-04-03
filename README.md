@@ -6,32 +6,7 @@ A Zero-Trust AI Agent that routes queries to isolated databases based on user id
 
 ## Architecture
 
-```
-                     User / Internet
-                          |
-                     [ IAP ]
-                          |
-    ┌─────────────────────┴─────────────────────────┐
-    |              vpc-hub  10.0.0.0/24              |
-    |                                                |
-    |            [ Cloud Run Agent ]                 |
-    |          Gemini 2.5 Flash + LangChain          |
-    |                                                |
-    |   [ PSC 10.0.0.50 ]    [ PSC 10.0.0.51 ]     |
-    └────────┬────────────────────────┬──────────────┘
-             |  PSC tunnel            |  PSC tunnel
-    ┌────────▼──────────┐   ┌────────▼──────────┐
-    | vpc-spoke-hr      |   | vpc-spoke-fin     |
-    | 10.1.0.0/24       |   | 10.2.0.0/24       |
-    |                   |   |                    |
-    | Cloud SQL (HR)    | X | Cloud SQL (Fin)    |
-    | PostgreSQL 15     |   | PostgreSQL 15      |
-    | 10.1.1.3          |   | 10.2.1.3           |
-    └───────────────────┘   └────────────────────┘
-         No direct path between spokes
-
-    [ VPC Service Controls Perimeter ]
-```
+![Architecture diagram](images/architecture.png)
 
 ### Key Components
 
@@ -111,13 +86,12 @@ Push to `master` triggers the GitHub Actions pipeline which:
 
 ## Firewall Rules
 
-```
-            → Hub     → HR      → Fin     → Internet
-From Hub      -        ✅        ✅        ❌
-From HR      ✅        -         ❌        ❌
-From Fin     ✅        ❌        -         ❌
-From Internet ❌       ❌        ❌        -
-```
+| From / To | Hub | HR | Fin | Internet |
+|------------|:---:|:--:|:---:|:--------:|
+| Hub        | - | ✅ | ✅ | ❌ |
+| HR         | ✅ | - | ❌ | ❌ |
+| Fin        | ✅ | ❌ | - | ❌ |
+| Internet   | ❌ | ❌ | ❌ | - |
 
 ## License
 
